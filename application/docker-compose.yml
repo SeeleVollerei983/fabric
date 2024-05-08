@@ -1,0 +1,31 @@
+version: '2.1'
+
+networks:
+  fabric_network:
+    external:
+      name: fabric_network
+
+services:
+  # 后端
+  fabric-realty.server:
+    image: fabric-realty.server:latest
+    # 如改动代码需要自行编译（进入 server 执行 ./build.sh ）并使用本地镜像：fabric-realty.server:latest
+    # image: fabric-realty.server:latest
+    container_name: fabric-realty.server
+    ports:
+      - "8888:8888"
+    volumes:
+      - /usr/share/zoneinfo/Asia/Shanghai:/usr/share/zoneinfo/Asia/Shanghai
+      - ./../network/crypto-config:/network/crypto-config
+    networks:
+      - fabric_network
+  # 前端
+  fabric-realty.web:
+    image: fabric-realty.web:latest
+    # 如改动代码需要自行编译（进入 web 执行 ./build.sh ）并使用本地镜像：fabric-realty.web:latest
+    # image: fabric-realty.web:latest
+    container_name: fabric-realty.web
+    ports:
+      - "8000:80"
+    networks:
+      - fabric_network
